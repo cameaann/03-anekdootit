@@ -16,7 +16,18 @@ const App = () => {
 
   const [selected, setSelected] = useState(0);
   const [points, setPoints] = useState(initialPoints);
-  const [maxVotesId, setMax] = useState(0);
+
+  const getMostVotesAnecdote = ()=> {
+    let max = Math.max(...points);
+    let id = points.findIndex(x => x === max);
+    if(id){
+      return id;
+    }
+    else return 0;
+  }
+
+  const maxVotesId = getMostVotesAnecdote();
+  const maxVotesAnecdote = anecdotes.find((x, id) =>  id === maxVotesId);
 
   const getNextAnecdote = () => {
     const randomNum = generateRandomIntegerInRange(0, anecdotes.length - 1);
@@ -32,18 +43,8 @@ const App = () => {
     let newVal = copy[selected] + 1;
     copy[selected] = newVal;
     setPoints(copy);
-    getMostVotesAnecdote();
   };
-
-  function getMostVotesAnecdote() {
-    let max = Math.max(...points);
-    points.find((x, id) => {
-      if (x === max) {
-        setMax(id);
-      }
-    });
-  }
-  console.log(points);
+  
 
   return (
     <div>
@@ -57,7 +58,7 @@ const App = () => {
       </div>
 
       <h1>Anecdote with most votes</h1>
-      <div>{anecdotes[maxVotesId]}</div>
+      <div>{maxVotesAnecdote}</div>
     </div>
   );
 };
